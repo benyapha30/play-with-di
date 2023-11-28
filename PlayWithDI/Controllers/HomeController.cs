@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PlayWithDI.Models;
+using PlayWithDI.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,14 +13,17 @@ namespace PlayWithDI.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IAqiService aqiService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IAqiService aqiService)
         {
             _logger = logger;
+            this.aqiService = aqiService;
         }
 
         public IActionResult Index()
         {
+            ViewBag.AQI = aqiService.GetAQI("Bangkok", DateTime.Now);
             return View();
         }
 
